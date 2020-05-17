@@ -33,6 +33,7 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
+  console.log('Conectado porra')
   // socket.emit('news', { hello: 'world' });
   socket.on('my other event', (data) => {
     console.log(data);
