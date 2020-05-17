@@ -19,11 +19,17 @@ app.get('/escritorio', (req, res) => {
 
 app.get('/escritorio/:newState', (req, res) => {
   if (req.params.newState === 'on') {
-    officeState = true;
-    io.emit('update', { office: officeState });
+    if (officeState === false) {
+      officeState = true;
+      io.emit('update', { office: officeState });
+    }
     return res.json({ error: false, message: 'ok' });
   }
   if (req.params.newState === 'off') {
+    if (officeState === true) {
+      officeState = false;
+      io.emit('update', { office: officeState });
+    }
     officeState = false;
     io.emit('update', { office: officeState });
     return res.json({ error: false, message: 'ok' });
@@ -33,10 +39,6 @@ app.get('/escritorio/:newState', (req, res) => {
 
 io.on('connection', (socket) => {
   console.log('Client connected')
-  // socket.emit('news', { hello: 'world' });
-  // socket.on('my other event', (data) => {
-  //   console.log(data);
-  // });
   socket.on('disconnect', () => console.log('Client disconnected'));
 });
 
